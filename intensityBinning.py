@@ -7,7 +7,17 @@ import time
 import matplotlib.pyplot as plt
 
 
-
+def getMinMaxValues(currentValue, minValue, maxValue):
+	if minValue != None && maxValue != None:
+		if currentValue > maxValue:
+			maxValue = currentValue
+		elif currentValue < minValue:
+			minValue = currentValue
+	else:
+		minValue = currentValue
+		maxValue = currentValue
+	return minValue, maxValue
+	
 def sortByIntensity(maxRows, roundTo):
 	counter			= 0
 	intensityDict	= {}
@@ -86,6 +96,9 @@ def generateIntensityHistogramReducedMemory(maxRows, binSize, roundTo):
 	if maxRows == 0: maxRows = fileLength - 1
 	for row in range(0, maxRows):
 		tempIntensity = inputfile[row].intensity
+		minValue, maxValue = getMinMaxValues(currentValue, minValue, maxValue)
+		
+		
 		while tempIntensity > max(intensityArray):
 			intensityArray.append(max(intensityArray) + binSize)
 			intensityCountArray.append(0)
@@ -96,13 +109,13 @@ def generateIntensityHistogramReducedMemory(maxRows, binSize, roundTo):
 
 	return intensityArray, intensityCountArray
 
-start_time			= time.time()	
+start_time			= time.time()
 inputfile			= file.File('L109633_EB.las', mode='r')
 outputfile			= open('outputfile.txt', 'w')
 countIntervals		= range(0, 1000000000, 100000)
 fileLength			= len(inputfile)
-bins, frequencies	= generateIntensityHistogramReducedMemory(0, 1000, 3)
-outputfile.write('%s\n' % (bins))
-outputfile.write('%s\n' % (frequencies))
+bins, frequencies	= generateIntensityHistogramReducedMemory(1000000, 1000, 3)
+outputfile.write('Histogram Bins: %s\n' % (bins))
+outputfile.write('Bin Frequencies: %s\n' % (frequencies))
 outputfile.close()
 print time.time() - start_time, "seconds to execute!"
