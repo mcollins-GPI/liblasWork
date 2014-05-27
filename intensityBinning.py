@@ -6,9 +6,6 @@ import bisect
 import time
 import matplotlib.pyplot as plt
 
-<<<<<<< HEAD
-=======
-
 def getMinMaxValues(currentValue, minValue, maxValue):
 	if minValue != None && maxValue != None:
 		if currentValue > maxValue:
@@ -19,8 +16,6 @@ def getMinMaxValues(currentValue, minValue, maxValue):
 		minValue = currentValue
 		maxValue = currentValue
 	return minValue, maxValue
-	
->>>>>>> 4886f57944d1c085ecfd04550f53d2507515dbb7
 def sortByIntensity(maxRows, roundTo):
 	counter			= 0
 	intensityDict	= {}
@@ -92,14 +87,6 @@ def generateIntensityHistogram(maxRows, binSize, roundTo):
 	print 'Histogram data processed. Launching GUI to display results!'
 	plt.show()
 	return intensityDict, histogramBins
-<<<<<<< HEAD
-def generateIntensityHistogramReducedMemory(inputfile, binSize, roundTo):
-	memoryCheck			= {}
-	intensityArray		= [0]
-	intensityCountArray	= [0]
-	for point in inputfile:
-		tempIntensity = point.intensity
-=======
 def generateIntensityHistogramReducedMemory(maxRows, binSize, roundTo):
 	memoryCheck = {}
 	intensityArray = [0]
@@ -108,9 +95,6 @@ def generateIntensityHistogramReducedMemory(maxRows, binSize, roundTo):
 	for row in range(0, maxRows):
 		tempIntensity = inputfile[row].intensity
 		minValue, maxValue = getMinMaxValues(currentValue, minValue, maxValue)
-		
-		
->>>>>>> 4886f57944d1c085ecfd04550f53d2507515dbb7
 		while tempIntensity > max(intensityArray):
 			intensityArray.append(max(intensityArray) + binSize)
 			intensityCountArray.append(0)
@@ -118,25 +102,13 @@ def generateIntensityHistogramReducedMemory(maxRows, binSize, roundTo):
 			intensityArray.insert(0, min(intensityArray) - binSize)
 			intensityCountArray.insert(0, 0)
 		intensityCountArray[bisect.bisect_left(intensityArray, tempIntensity)] += 1
-
 	return intensityArray, intensityCountArray
 
-<<<<<<< HEAD
 start_time			= time.time()	
 inputfile			= lasfile.File('L109633_EB.las', mode = 'r')
 outputfile			= open('outputfile.txt', 'w')
-bins, frequencies	= generateIntensityHistogramReducedMemory(inputfile, 1000, 3)
-outputfile.write('%s\n' % (bins))
-outputfile.write('%s\n' % (frequencies))
-=======
-start_time			= time.time()
-inputfile			= file.File('L109633_EB.las', mode='r')
-outputfile			= open('outputfile.txt', 'w')
-countIntervals		= range(0, 1000000000, 100000)
-fileLength			= len(inputfile)
 bins, frequencies	= generateIntensityHistogramReducedMemory(1000000, 1000, 3)
 outputfile.write('Histogram Bins: %s\n' % (bins))
 outputfile.write('Bin Frequencies: %s\n' % (frequencies))
->>>>>>> 4886f57944d1c085ecfd04550f53d2507515dbb7
 outputfile.close()
 print time.time() - start_time, "seconds to execute!"
